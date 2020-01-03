@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Bindings;
 using UnityEngine.UI;
 
 public class Player : MonoBehaviour
@@ -44,25 +45,25 @@ public class Player : MonoBehaviour
     private void Dead()
     {
         final.SetActive(true);
-        textCurrent.text = "Time : " + gameTime.ToString("F2");
-        textBest.text = "Best : " + PlayerPrefs.GetFloat("Best Score").ToString("F2");
+        textCurrent.text = "Time : " + gameTime.ToString("F1");
+        textBest.text = "Best : " + PlayerPrefs.GetFloat("Best Score").ToString("F1");
         Cursor.lockState = CursorLockMode.None;
 
-        //GetComponent<vThirdPersonCamera.vThirdPersonCamera>().enabled = false;
+        //GetComponent<CharacterController> ().enabled = false;
         enabled = false;
     }
 
     private void GameOver()
     {
         final.SetActive(true);
-        textCurrent.text = "Time : " + gameTime.ToString("F2");
+        textCurrent.text = "Time : " + gameTime.ToString("F1");
 
         if (gameTime < PlayerPrefs.GetFloat("Best Score"))
         {
             PlayerPrefs.SetFloat("Best Score", gameTime);
         }
 
-        textBest.text = "Best : " + PlayerPrefs.GetFloat("Best Score").ToString("F2");
+        textBest.text = "Best : " + PlayerPrefs.GetFloat("Best Score").ToString("F1");
 
         Cursor.lockState = CursorLockMode.None;
     }
