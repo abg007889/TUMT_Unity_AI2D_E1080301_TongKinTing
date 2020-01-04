@@ -9,6 +9,8 @@ public class Player : MonoBehaviour
     [Header("HP UI")]
     public int hp = 100;
     public Slider hpSlider;
+    private bool dead;
+    private int count;
     [Header("Collect Area")]
     public Text textCollect;
     public int collectCount;
@@ -20,6 +22,8 @@ public class Player : MonoBehaviour
     public GameObject final;
     public Text textBest;
     public Text textCurrent;
+    public Text textEnd;
+    public Text textQ;
 
     private void Start()
     {
@@ -29,11 +33,19 @@ public class Player : MonoBehaviour
         }
         collectTotal = GameObject.FindGameObjectsWithTag("Collect").Length;
         textCollect.text = "Collect : 0 / " + collectTotal;
+        dead = false;
+        count = 0;
     }
 
     private void Update()
     {
         UpdateTime();
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            hp = 100;
+            hpSlider.value = hp;
+            count++;
+        }
     }
 
     private void UpdateTime()
@@ -47,13 +59,16 @@ public class Player : MonoBehaviour
         final.SetActive(true);
         textCurrent.text = "Time : " + gameTime.ToString("F1");
         textBest.text = "Best : " + PlayerPrefs.GetFloat("Best Score").ToString("F1");
+        textEnd.text = "GameOver";
+        textQ.text = "\"Q\" Times : " + count;
+        dead = true;
         Cursor.lockState = CursorLockMode.None;
 
         //GetComponent<CharacterController> ().enabled = false;
         enabled = false;
     }
 
-    private void GameOver()
+    private void Victory()
     {
         final.SetActive(true);
         textCurrent.text = "Time : " + gameTime.ToString("F1");
@@ -64,14 +79,13 @@ public class Player : MonoBehaviour
         }
 
         textBest.text = "Best : " + PlayerPrefs.GetFloat("Best Score").ToString("F1");
-
+        textEnd.text = "Victory";
+        textQ.text = "\"Q\" Times : " + count;
         Cursor.lockState = CursorLockMode.None;
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        print(other.gameObject);
-
         if (other.tag == "Trap")
         {
             int d = other.GetComponent<Trap>().damage;
@@ -85,9 +99,9 @@ public class Player : MonoBehaviour
             textCollect.text = "Collect : " + collectCount + " / " + collectTotal;
             Destroy(other.gameObject);
         }
-        if (other.name == "Protal" && collectCount == collectTotal)
+        if (other.name == "Protal" && collectCount == collectTotal && dead == false)
         {
-            GameOver();
+            Victory();
         }
     }
 

@@ -1,34 +1,37 @@
 ﻿using UnityEngine;
-using UnityEngine.Audio; // using Audio API(功能)
+using UnityEngine.Audio;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.Collections;
 
 public class GameManager : MonoBehaviour {
-    //public AudioMixer mixer;
-    //public Text loadingText;
-    //public Slider loading;
-    /*public void SetVBGM(float value)
+    public AudioMixer mixer;
+    public Slider loading;
+    public void SetVM(float v)
     {
-        mixer.SetFloat("VBGM", value);
+        mixer.SetFloat("VM", v);
     }
-    public void SetVSFX(float value)
+    public void SetVBGM(float v)
     {
-        mixer.SetFloat("VSFX", value);
-    }*/
+        mixer.SetFloat("VBGM", v);
+    }
+    public void SetVSFX(float v)
+    {
+        mixer.SetFloat("VSFX", v);
+    }
+
     public void Play()
     {
-        //StartCoroutine(Loading());
+        StartCoroutine(Loading());
     }
     
-    /*private IEnumerator Loading()
+    private IEnumerator Loading()
     {
         AsyncOperation ao = SceneManager.LoadSceneAsync("遊戲場景");
         ao.allowSceneActivation = false;
 
         while(ao.isDone == false)
         {
-            loadingText.text = ((ao.progress / 0.9f) * 100).ToString();
             loading.value = ao.progress / 0.9f;
             yield return new WaitForSeconds(0.0001f);
 
@@ -38,7 +41,7 @@ public class GameManager : MonoBehaviour {
             }
         }
 
-    }*/
+    }
 
     public void Replay()
     {
